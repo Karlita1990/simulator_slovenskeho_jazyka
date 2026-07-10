@@ -1,3 +1,19 @@
+// ======================== ВИЗНАЧЕННЯ ПЛАТФОРМИ ========================
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const supportsSpeechRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+const supportsSpeechSynthesis = 'speechSynthesis' in window;
+
+console.log('📱 Платформа:', {
+    isIOS,
+    isSafari,
+    isMobile,
+    supportsSpeechRecognition,
+    supportsSpeechSynthesis
+});
+
 // ======================== ГЛОБАЛЬНІ ЗМІННІ ========================
 let THEMES_HIERARCHY = {};
 let masterWords = {};
@@ -25,6 +41,382 @@ let currentDialogueTheme = "Знайомство", currentDialogueIndex = 0, cur
 // Web Speech
 let activeRecognition = null;
 let currentMicButton = null;
+let availableVoices = [];
+let voiceLoadAttempts = 0;
+const MAX_VOICE_ATTEMPTS = 5;
+let isSpeechInitialized = false;
+
+// ======================== ЗАВАНТАЖЕННЯ ГОЛОСІВ ========================
+function loadVoices() {
+    return new Promise((resolve) => {
+        if (!window.speechSynthesis) {
+            resolve([]);
+            return;
+        }
+        
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length > 0) {
+            availableVoices = voices;
+            console.log('✅ Голоси завантажено:', voices.length);
+            resolve(voices);
+            return;
+        }
+        
+        const delay = isIOS ? 500 : 100;
+        
+        const checkVoices = () => {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                availableVoices = voices;
+                console.log('✅ Голоси завантажено (повторно):', voices.length);
+                resolve(voices);
+                return;
+            }
+            
+            voiceLoadAttempts++;
+            if (voiceLoadAttempts < MAX_VOICE_ATTEMPTS) {
+                console.log(`🔄 Спроба ${voiceLoadAttempts}/${MAX_VOICE_ATTEMPTS}...`);
+                setTimeout(checkVoices, delay);
+            } else {
+                console.warn('⚠️ Не вдалося завантажити голоси');
+                resolve([]);
+            }
+        };
+        
+        if (window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    availableVoices = voices;
+                    resolve(voices);
+                }
+            };
+        }
+        
+        setTimeout(checkVoices, delay);
+    });
+}
+
+// ======================== TTS ТА РОЗПІЗНАВАННЯ ========================
+function speakText(text, lang = 'sk-SK') {
+    if (!text) return;
+    
+    if (!window.speechSynthesis) {
+        if (isIOS) {
+            showIOSFallback(text);
+        } else {
+            alert("Ваш браузер не підтримує озвучення.");
+        }
+        return;
+    }
+    
+    // Для iOS: потрібно викликати в контексті жесту користувача
+    if (isIOS && !isSpeechInitialized) {
+        isSpeechInitialized = true;
+        // Запитуємо дозвіл при першому використанні
+        try {
+            window.speechSynthesis.getVoices();
+        } catch(e) {}
+    }
+    
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.rate = 0.85;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    // Вибір голосу
+    let selectedVoice = null;
+    
+    if (availableVoices.length === 0) {
+        availableVoices = window.speechSynthesis.getVoices();
+    }
+    
+    if (isIOS) {
+        // Пріоритет для iOS: спочатку словацькі голоси Apple
+        const iosPriority = [
+            'Zuzana', 'Laura', 'Slovak', 'sk-SK', 'sk',
+            'Iveta', 'cs-CZ', 'Ewa', 'pl-PL'
+        ];
+        
+        for (const pref of iosPriority) {
+            selectedVoice = availableVoices.find(v => 
+                v.name.includes(pref) || 
+                v.lang === pref ||
+                v.lang.startsWith(pref.replace('-', ''))
+            );
+            if (selectedVoice) break;
+        }
+        
+        // Якщо немає словацького, беремо будь-який жіночий голос
+        if (!selectedVoice) {
+            selectedVoice = availableVoices.find(v => 
+                v.lang === 'cs-CZ' || 
+                v.lang === 'pl-PL' ||
+                v.lang.startsWith('cs') ||
+                v.lang.startsWith('pl')
+            );
+        }
+    } else {
+        // Для Android/інших
+        const priority = [
+            'Google slovak', 'Google čeština', 'Google polski',
+            'sk-SK', 'sk', 'cs-CZ', 'pl-PL'
+        ];
+        
+        for (const pref of priority) {
+            selectedVoice = availableVoices.find(v => 
+                v.name.toLowerCase().includes(pref.toLowerCase()) ||
+                v.lang === pref
+            );
+            if (selectedVoice) break;
+        }
+    }
+    
+    // Якщо все ще немає голосу, беремо перший доступний
+    if (!selectedVoice && availableVoices.length > 0) {
+        selectedVoice = availableVoices[0];
+    }
+    
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        console.log('🎤 Вибрано голос:', selectedVoice.name, selectedVoice.lang);
+        
+        // Оптимальна швидкість для різних голосів
+        if (selectedVoice.name.includes('Google')) {
+            utterance.rate = 0.9;
+        } else if (selectedVoice.name.includes('Zuzana') || selectedVoice.name.includes('Laura')) {
+            utterance.rate = 0.85;
+        }
+    } else {
+        console.warn('⚠️ Не знайдено відповідного голосу');
+    }
+    
+    // Обробка помилок
+    utterance.onerror = (event) => {
+        console.error('❌ Помилка озвучення:', event);
+        if (isIOS) {
+            showIOSFallback(text);
+        }
+    };
+    
+    utterance.onend = () => {
+        console.log('✅ Озвучення завершено');
+    };
+    
+    try {
+        window.speechSynthesis.speak(utterance);
+    } catch (error) {
+        console.error('❌ Помилка виклику speak:', error);
+        if (isIOS) {
+            showIOSFallback(text);
+        }
+    }
+}
+
+// ======================== FALLBACK ДЛЯ IOS ========================
+function showIOSFallback(text) {
+    const existing = document.getElementById('iosSpeechFallback');
+    if (existing) existing.remove();
+    
+    const div = document.createElement('div');
+    div.id = 'iosSpeechFallback';
+    div.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e3c72;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 16px;
+        max-width: 90%;
+        z-index: 9999;
+        font-size: 1rem;
+        text-align: center;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        animation: fadeInUp 0.3s ease;
+    `;
+    div.innerHTML = `
+        <div style="margin-bottom: 8px;">🔊 Натисніть для озвучення:</div>
+        <div style="font-weight: 600; font-size: 1.2rem; word-wrap: break-word;">${text}</div>
+        <button onclick="this.parentElement.remove()" style="
+            margin-top: 12px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        ">✕ Закрити</button>
+    `;
+    document.body.appendChild(div);
+    
+    setTimeout(() => {
+        if (div.parentElement) div.remove();
+    }, 8000);
+}
+
+// ======================== АДАПТОВАНИЙ МІКРОФОН ДЛЯ IOS ========================
+function startListening(expectedText, callback, buttonElement) {
+    // Перевірка підтримки на iOS
+    if (isIOS && !supportsSpeechRecognition) {
+        showIOSMicFallback(expectedText, callback);
+        return;
+    }
+    
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        if (isIOS) {
+            showIOSMicFallback(expectedText, callback);
+        } else {
+            callback(false, "Розпізнавання не підтримується.");
+        }
+        return;
+    }
+    
+    if (activeRecognition) {
+        try { activeRecognition.abort(); } catch(e) {}
+        activeRecognition = null;
+    }
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'sk-SK';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = false;
+    
+    // Для iOS додаткові налаштування
+    if (isIOS) {
+        recognition.lang = 'sk-SK';
+        recognition.interimResults = true;
+    }
+    
+    if (buttonElement) {
+        currentMicButton = buttonElement;
+        buttonElement.classList.add('recording');
+        buttonElement.innerHTML = '🔴 Слухаю...';
+        buttonElement.disabled = true;
+    }
+    
+    recognition.start();
+    
+    recognition.onresult = (event) => {
+        let spoken = '';
+        if (event.results.length > 0) {
+            const lastResult = event.results[event.results.length - 1];
+            if (lastResult.isFinal) {
+                spoken = lastResult[0].transcript;
+            } else if (event.results[0][0]) {
+                spoken = event.results[0][0].transcript;
+            }
+        }
+        
+        if (spoken) {
+            const normalizedSpoken = spoken.toLowerCase().trim().replace(/\s+/g, ' ');
+            const normalizedExpected = expectedText.toLowerCase().trim().replace(/\s+/g, ' ');
+            callback(normalizedSpoken === normalizedExpected, spoken);
+            stopListeningUI(buttonElement);
+        }
+    };
+    
+    recognition.onerror = (event) => {
+        let errorMsg = 'Помилка розпізнавання';
+        
+        if (isIOS) {
+            switch(event.error) {
+                case 'not-allowed':
+                    errorMsg = 'Дозвольте доступ до мікрофона в налаштуваннях iPhone';
+                    break;
+                case 'audio-capture':
+                    errorMsg = 'Не вдалося отримати доступ до мікрофона';
+                    break;
+                case 'network':
+                    errorMsg = 'Помилка мережі. Спробуйте ще раз.';
+                    break;
+                default:
+                    errorMsg = `Помилка: ${event.error}`;
+            }
+        } else {
+            errorMsg = event.error === 'not-allowed' ? 'Немає дозволу на мікрофон.' : event.error;
+        }
+        
+        callback(false, errorMsg);
+        stopListeningUI(buttonElement);
+    };
+    
+    recognition.onend = () => {
+        stopListeningUI(buttonElement);
+        if (buttonElement) buttonElement.disabled = false;
+    };
+    
+    activeRecognition = recognition;
+    
+    const timeout = isIOS ? 15000 : 10000;
+    setTimeout(() => {
+        if (activeRecognition) {
+            try { activeRecognition.abort(); } catch(e) {}
+            stopListeningUI(buttonElement);
+            if (buttonElement) buttonElement.disabled = false;
+            callback(false, "Час вичерпано.");
+        }
+    }, timeout);
+}
+
+// ======================== FALLBACK ДЛЯ МІКРОФОНА НА IOS ========================
+function showIOSMicFallback(expectedText, callback) {
+    // Показуємо діалог для ручного введення
+    const userInput = prompt(`📱 Введіть текст словацькою:\n(очікується: "${expectedText}")`);
+    if (userInput !== null && userInput.trim() !== '') {
+        const normalizedInput = userInput.trim().toLowerCase().replace(/\s+/g, ' ');
+        const normalizedExpected = expectedText.toLowerCase().trim().replace(/\s+/g, ' ');
+        callback(normalizedInput === normalizedExpected, userInput.trim());
+    } else {
+        callback(false, "Введення скасовано");
+    }
+}
+
+function stopListeningUI(buttonElement) {
+    if (buttonElement) {
+        buttonElement.classList.remove('recording');
+        buttonElement.innerHTML = buttonElement.getAttribute('data-original-text') || '🎤 Вимова';
+        buttonElement.disabled = false;
+    }
+    if (activeRecognition) {
+        try { activeRecognition.abort(); } catch(e) {}
+        activeRecognition = null;
+    }
+    currentMicButton = null;
+}
+
+function setupMicButton(buttonId, expectedTextGetter, feedbackId, successMessage) {
+    const btn = document.getElementById(buttonId);
+    if (!btn) return;
+    btn.setAttribute('data-original-text', btn.innerHTML);
+    btn.addEventListener("click", () => {
+        const expected = (typeof expectedTextGetter === "function") ? expectedTextGetter() : expectedTextGetter;
+        if (!expected) {
+            const fb = document.getElementById(feedbackId);
+            if (fb) fb.innerHTML = "❌ Немає слова для перевірки.";
+            return;
+        }
+        startListening(expected, (ok, spoken) => {
+            const fb = document.getElementById(feedbackId);
+            if (fb) {
+                if (ok) {
+                    fb.innerHTML = `✅ ${successMessage || "Вимова правильна!"}`;
+                    fb.style.color = '#10b981';
+                } else {
+                    fb.innerHTML = `❌ ${spoken || "Помилка"}. Очікувалось: "${expected}"`;
+                    fb.style.color = '#ef4444';
+                }
+            }
+        }, btn);
+    });
+}
 
 // ======================== ЗАВАНТАЖЕННЯ ДАНИХ ========================
 async function loadData() {
@@ -45,10 +437,23 @@ async function loadData() {
         
         buildAllThemes();
         fillPanels();
+        
+        // Завантажуємо голоси
+        await loadVoices();
+        
         initApp();
     } catch (error) {
-        console.error('Помилка завантаження даних:', error);
-        document.getElementById('themeHierarchy').innerHTML = '<div style="color:red;">Помилка завантаження даних. Переконайтеся, що всі JSON файли знаходяться в папці data/</div>';
+        console.error('❌ Помилка завантаження даних:', error);
+        document.getElementById('themeHierarchy').innerHTML = `
+            <div style="color:red; padding:20px; text-align:center;">
+                ❌ Помилка завантаження даних. Переконайтеся, що всі JSON файли знаходяться в папці data/
+                <br><br>
+                <details>
+                    <summary>Деталі помилки</summary>
+                    <pre style="text-align:left; background:#f1f5f9; padding:10px; border-radius:8px; overflow:auto;">${error.message}</pre>
+                </details>
+            </div>
+        `;
     }
 }
 
@@ -58,12 +463,50 @@ function buildAllThemes() {
         for (let catId in THEMES_HIERARCHY[levelId].categories) {
             for (let themeId in THEMES_HIERARCHY[levelId].categories[catId].themes) {
                 const theme = THEMES_HIERARCHY[levelId].categories[catId].themes[themeId];
-                theme.words = (masterWords[themeId] || []).map(e => { let [sk, uk] = e.split(","); return { sk: sk.trim(), uk: uk.trim() }; });
+                theme.words = (masterWords[themeId] || []).map(e => { 
+                    let [sk, uk] = e.split(","); 
+                    return { sk: sk.trim(), uk: uk.trim() }; 
+                });
                 theme.phrases = phraseLibrary[themeId] || [];
                 theme.listeningItems = listeningLibrary[themeId] || [];
                 ALL_THEMES[themeId] = theme;
             }
         }
+    }
+}
+
+// ======================== ІНСТРУКЦІЇ ДЛЯ IOS ========================
+function showIOSInstructions() {
+    const existing = document.getElementById('iosInstructions');
+    if (existing) return;
+    
+    const div = document.createElement('div');
+    div.id = 'iosInstructions';
+    div.style.cssText = `
+        background: #fef9e3;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        border-left: 4px solid #f59e0b;
+        font-size: 0.9rem;
+    `;
+    div.innerHTML = `
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <span style="font-size: 1.4rem;">📱</span>
+            <div>
+                <strong style="display: block; margin-bottom: 4px;">Для iPhone:</strong>
+                <ul style="margin: 4px 0 0 16px; padding-left: 4px;">
+                    <li>Дозвольте доступ до мікрофона в налаштуваннях Safari</li>
+                    <li>Натискайте кнопки 🎤 для озвучення</li>
+                    <li>Якщо мікрофон не працює, введіть текст вручну</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    const container = document.querySelector('.app-container');
+    if (container) {
+        container.insertBefore(div, container.firstChild);
     }
 }
 
@@ -141,87 +584,14 @@ function switchTheme(themeId) {
     if (quizStatsEl) quizStatsEl.innerHTML = `Правильних: ${stats.correct} / ${stats.total}`;
     currentPhraseIndex = progressData[currentThemeId].phraseIndex || 0;
     if (currentPhrases.length > 0 && currentPhraseIndex >= currentPhrases.length) currentPhraseIndex = 0;
-    if (typeof loadPhrase === 'function') loadPhrase(currentPhraseIndex);
-    if (typeof generateQuizQuestion === 'function') generateQuizQuestion();
+    loadPhrase(currentPhraseIndex);
+    generateQuizQuestion();
     currentListeningIndex = progressData[currentThemeId].listeningIndex || 0;
     if (currentListeningItems.length > 0 && currentListeningIndex >= currentListeningItems.length) currentListeningIndex = 0;
-    if (typeof loadListeningTask === 'function') loadListeningTask(currentListeningIndex);
-    if (typeof renderVocabulary === 'function') renderVocabulary(document.getElementById("searchVocab")?.value || "");
-    if (typeof updateLearnedStats === 'function') updateLearnedStats();
+    loadListeningTask(currentListeningIndex);
+    renderVocabulary(document.getElementById("searchVocab")?.value || "");
+    updateLearnedStats();
     saveThemeProgress();
-}
-
-// ======================== TTS ТА РОЗПІЗНАВАННЯ ========================
-function speakText(text, lang = 'sk-SK') {
-    if (!window.speechSynthesis) { alert("Ваш браузер не підтримує озвучення."); return; }
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.85;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-}
-
-function stopListeningUI(buttonElement) {
-    if (buttonElement) {
-        buttonElement.classList.remove('recording');
-        buttonElement.innerHTML = buttonElement.getAttribute('data-original-text') || '🎤 Вимова';
-    }
-    if (activeRecognition) { try { activeRecognition.abort(); } catch(e) {} activeRecognition = null; }
-    currentMicButton = null;
-}
-
-function startListening(expectedText, callback, buttonElement) {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        callback(false, "Розпізнавання не підтримується.");
-        return;
-    }
-    if (activeRecognition) { try { activeRecognition.abort(); } catch(e) {} activeRecognition = null; }
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'sk-SK';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    if (buttonElement) {
-        currentMicButton = buttonElement;
-        buttonElement.classList.add('recording');
-        buttonElement.innerHTML = '🔴 Слухаю...';
-    }
-    recognition.start();
-    recognition.onresult = (event) => {
-        const spoken = event.results[0][0].transcript;
-        const normalizedSpoken = spoken.toLowerCase().trim().replace(/\s+/g, ' ');
-        const normalizedExpected = expectedText.toLowerCase().trim().replace(/\s+/g, ' ');
-        callback(normalizedSpoken === normalizedExpected, spoken);
-        stopListeningUI(buttonElement);
-    };
-    recognition.onerror = (event) => {
-        let errorMsg = event.error === 'not-allowed' ? 'Немає дозволу на мікрофон.' : event.error;
-        callback(false, `Помилка: ${errorMsg}`);
-        stopListeningUI(buttonElement);
-    };
-    recognition.onend = () => { stopListeningUI(buttonElement); };
-    activeRecognition = recognition;
-    setTimeout(() => {
-        if (activeRecognition) { try { activeRecognition.abort(); } catch(e) {} stopListeningUI(buttonElement); callback(false, "Час вичерпано."); }
-    }, 10000);
-}
-
-function setupMicButton(buttonId, expectedTextGetter, feedbackId, successMessage) {
-    const btn = document.getElementById(buttonId);
-    if (!btn) return;
-    btn.setAttribute('data-original-text', btn.innerHTML);
-    btn.addEventListener("click", () => {
-        const expected = (typeof expectedTextGetter === "function") ? expectedTextGetter() : expectedTextGetter;
-        if (!expected) {
-            const fb = document.getElementById(feedbackId);
-            if (fb) fb.innerHTML = "❌ Немає слова для перевірки.";
-            return;
-        }
-        startListening(expected, (ok, spoken) => {
-            const fb = document.getElementById(feedbackId);
-            if (fb) fb.innerHTML = ok ? `✅ ${successMessage || "Вимова правильна!"}` : `❌ ${spoken || "Помилка"}. Очікувалось: "${expected}"`;
-        }, btn);
-    });
 }
 
 // ======================== ПРОГРЕС ========================
@@ -297,9 +667,9 @@ function checkQuizAnswer(selected) {
     if(selected === currentQuizQuestion.correctUk) {
         stats.correct++;
         speakText(currentQuizQuestion.skWord);
-        if (fb) fb.innerHTML = "✅ Правильно!";
+        if (fb) { fb.innerHTML = "✅ Правильно!"; fb.style.color = '#10b981'; }
     } else {
-        if (fb) fb.innerHTML = `❌ Помилка: ${currentQuizQuestion.correctUk}`;
+        if (fb) { fb.innerHTML = `❌ Помилка: ${currentQuizQuestion.correctUk}`; fb.style.color = '#ef4444'; }
     }
     progressData[currentThemeId].quizStats = stats;
     saveThemeProgress();
@@ -372,10 +742,10 @@ function checkPhrase() {
     let userSentence = currentUserSentence.map(w=>w.word).join(" ").replace(/\s+([?.!,])/g,"$1");
     const fb = document.getElementById("phraseFeedback");
     if(userSentence.trim() === phrase.sk.trim()) {
-        if (fb) fb.innerHTML = "✅ Правильно!";
+        if (fb) { fb.innerHTML = "✅ Правильно!"; fb.style.color = '#10b981'; }
         speakText(phrase.sk);
     } else {
-        if (fb) fb.innerHTML = `❌ Неправильно: "${phrase.sk}"`;
+        if (fb) { fb.innerHTML = `❌ Неправильно: "${phrase.sk}"`; fb.style.color = '#ef4444'; }
     }
     phraseAnswered=true;
 }
@@ -389,6 +759,7 @@ function loadListeningTask(idx) {
     if (inputEl) {
         inputEl.value = "";
         inputEl.dataset.correctAnswer = target;
+        inputEl.placeholder = "Введіть словацькою...";
     }
     const fb = document.getElementById("listeningFeedback");
     if (fb) fb.innerHTML = "";
@@ -406,10 +777,10 @@ function checkListening() {
     let correct = inputEl.dataset.correctAnswer.toLowerCase().replace(/\s+/g," ");
     const fb = document.getElementById("listeningFeedback");
     if(user===correct) {
-        if (fb) fb.innerHTML = "✅ Правильно!";
+        if (fb) { fb.innerHTML = "✅ Правильно!"; fb.style.color = '#10b981'; }
         speakText(inputEl.dataset.correctAnswer);
     } else {
-        if (fb) fb.innerHTML = `❌ Правильно: ${inputEl.dataset.correctAnswer}`;
+        if (fb) { fb.innerHTML = `❌ Правильно: ${inputEl.dataset.correctAnswer}`; fb.style.color = '#ef4444'; }
     }
     listeningAnswered=true;
 }
@@ -465,7 +836,7 @@ function renderDialogue() {
 function advanceDialogue(userSpoken) {
     if (currentDialogueIndex >= currentDialogueLines.length-1) {
         const fb = document.getElementById("dialogFeedback");
-        if (fb) fb.innerHTML = "🎉 Діалог завершено!";
+        if (fb) { fb.innerHTML = "🎉 Діалог завершено!"; fb.style.color = '#10b981'; }
         return;
     }
     const nextLine = currentDialogueLines[currentDialogueIndex+1];
@@ -479,13 +850,13 @@ function advanceDialogue(userSpoken) {
             currentDialogueIndex++;
             renderDialogue();
             const fb = document.getElementById("dialogFeedback");
-            if (fb) fb.innerHTML = "✅ Відповідь прийнято!";
+            if (fb) { fb.innerHTML = "✅ Відповідь прийнято!"; fb.style.color = '#10b981'; }
             if (currentDialogueLines[currentDialogueIndex+1]?.speaker === "app") {
                 setTimeout(() => speakText(currentDialogueLines[currentDialogueIndex+1].sk, 'sk-SK'), 300);
             }
         } else {
             const fb = document.getElementById("dialogFeedback");
-            if (fb) fb.innerHTML = `❌ Очікувалося: ${nextLine.expected.join(" або ")}`;
+            if (fb) { fb.innerHTML = `❌ Очікувалося: ${nextLine.expected.join(" або ")}`; fb.style.color = '#ef4444'; }
         }
     } else {
         currentDialogueIndex++;
@@ -498,16 +869,44 @@ function initKeyboard() {
     const input = document.getElementById("listeningAnswerInput");
     const kbDiv = document.getElementById("skKeyboard");
     if (!kbDiv) return;
-    kbDiv.innerHTML = `<div class="keyboard-row"><span class="key" data-char="ä">ä</span><span class="key" data-char="ô">ô</span><span class="key" data-char="á">á</span><span class="key" data-char="é">é</span><span class="key" data-char="í">í</span><span class="key" data-char="ý">ý</span><span class="key" data-char="ó">ó</span><span class="key" data-char="ú">ú</span></div><div class="keyboard-row"><span class="key key-special" data-action="backspace">⌫</span><span class="key key-special" data-action="clear">🗑</span><span class="key key-special" data-action="space">␣</span></div>`;
+    kbDiv.innerHTML = `
+        <div class="keyboard-row">
+            <span class="key" data-char="ä">ä</span>
+            <span class="key" data-char="ô">ô</span>
+            <span class="key" data-char="á">á</span>
+            <span class="key" data-char="é">é</span>
+            <span class="key" data-char="í">í</span>
+            <span class="key" data-char="ý">ý</span>
+            <span class="key" data-char="ó">ó</span>
+            <span class="key" data-char="ú">ú</span>
+        </div>
+        <div class="keyboard-row">
+            <span class="key key-special" data-action="backspace">⌫</span>
+            <span class="key key-special" data-action="clear">🗑</span>
+            <span class="key key-special" data-action="space">␣</span>
+        </div>
+    `;
     document.querySelectorAll("#skKeyboard .key").forEach(k=>{
-        k.addEventListener("click",()=>{
-            let char=k.getAttribute("data-char"), act=k.getAttribute("data-action");
+        k.addEventListener("click", (e) => {
+            e.preventDefault();
+            let char = k.getAttribute("data-char");
+            let act = k.getAttribute("data-action");
             if(!input) return;
-            if(act==="backspace") input.value=input.value.slice(0,-1);
-            else if(act==="clear") input.value="";
-            else if(act==="space") input.value+=" ";
-            else if(char) input.value+=char;
+            if(act==="backspace") {
+                input.value = input.value.slice(0,-1);
+            } else if(act==="clear") {
+                input.value = "";
+            } else if(act==="space") {
+                input.value += " ";
+            } else if(char) {
+                input.value += char;
+            }
             input.focus();
+            // Для iOS: оновлюємо позицію курсора
+            if (isIOS) {
+                const length = input.value.length;
+                input.setSelectionRange(length, length);
+            }
         });
     });
 }
@@ -540,22 +939,96 @@ function switchTab(tabId) {
 
 function fillPanels() {
     const flashcardsPanel = document.getElementById("flashcardsPanel");
-    if (flashcardsPanel) flashcardsPanel.innerHTML = `<div class="flashcard" id="flashcardEl"><div class="word-slovak" id="currentWordSk"></div><div class="word-translation hidden-translation" id="currentWordUa"></div><div class="card-hint" style="font-size:0.7rem; text-align:center; margin-top:16px;">👇 Торкніться для перекладу</div></div><div class="btn-group"><button class="btn" id="prevCardBtn">◀ Попереднє</button><button class="btn btn-primary audio-btn" id="speakCardBtn">🔊 Озвучити</button><button class="btn btn-mic" id="micCardBtn">🎤 Вимова</button><button class="btn" id="nextCardBtn">Наступне ▶</button></div><div class="progress-text" id="cardProgress" style="text-align:center"></div><div class="btn-group"><button class="btn" id="markLearnedBtn">✅ Вивчив</button><button class="btn" id="resetLearnedBtn">🔄 Скинути прогрес</button></div><div class="progress-text" id="learnedStats" style="text-align:center"></div><div id="cardMicFeedback" class="feedback-msg"></div>`;
+    if (flashcardsPanel) flashcardsPanel.innerHTML = `
+        <div class="flashcard" id="flashcardEl">
+            <div class="word-slovak" id="currentWordSk"></div>
+            <div class="word-translation hidden-translation" id="currentWordUa"></div>
+            <div class="card-hint" style="font-size:0.7rem; text-align:center; margin-top:16px;">👇 Торкніться для перекладу</div>
+        </div>
+        <div class="btn-group">
+            <button class="btn" id="prevCardBtn">◀ Попереднє</button>
+            <button class="btn btn-primary audio-btn" id="speakCardBtn">🔊 Озвучити</button>
+            <button class="btn btn-mic" id="micCardBtn">🎤 Вимова</button>
+            <button class="btn" id="nextCardBtn">Наступне ▶</button>
+        </div>
+        <div class="progress-text" id="cardProgress" style="text-align:center"></div>
+        <div class="btn-group">
+            <button class="btn" id="markLearnedBtn">✅ Вивчив</button>
+            <button class="btn" id="resetLearnedBtn">🔄 Скинути прогрес</button>
+        </div>
+        <div class="progress-text" id="learnedStats" style="text-align:center"></div>
+        <div id="cardMicFeedback" class="feedback-msg"></div>
+    `;
     
     const quizPanel = document.getElementById("quizPanel");
-    if (quizPanel) quizPanel.innerHTML = `<div class="quiz-card"><div class="word-slovak" id="quizQuestion" style="font-size:1.8rem;"></div><div id="quizOptions" class="btn-group" style="flex-direction:column;"></div><div id="quizFeedback" class="feedback-msg"></div><div class="btn-group"><button class="btn" id="nextQuizBtn">➡ Наступне</button><button class="btn audio-btn" id="speakQuizBtn">🔊 Озвучити</button><button class="btn btn-mic" id="micQuizBtn">🎤 Вимова</button></div><div id="quizStats" style="text-align:center; background:#eef2ff; padding:8px; border-radius:40px;">Правильних: 0 / 0</div></div>`;
+    if (quizPanel) quizPanel.innerHTML = `
+        <div class="quiz-card">
+            <div class="word-slovak" id="quizQuestion" style="font-size:1.8rem;"></div>
+            <div id="quizOptions" class="btn-group" style="flex-direction:column;"></div>
+            <div id="quizFeedback" class="feedback-msg"></div>
+            <div class="btn-group">
+                <button class="btn" id="nextQuizBtn">➡ Наступне</button>
+                <button class="btn audio-btn" id="speakQuizBtn">🔊 Озвучити</button>
+                <button class="btn btn-mic" id="micQuizBtn">🎤 Вимова</button>
+            </div>
+            <div id="quizStats" style="text-align:center; background:#eef2ff; padding:8px; border-radius:40px;">Правильних: 0 / 0</div>
+        </div>
+    `;
     
     const phrasesPanel = document.getElementById("phrasesPanel");
-    if (phrasesPanel) phrasesPanel.innerHTML = `<div class="sentence-builder"><div class="task-prompt">📘 Складіть речення словацькою</div><div class="sentence-target" id="targetSentenceUa"></div><div class="word-bank" id="wordBankContainer"></div><div class="sentence-construction" id="constructedArea"></div><div class="feedback-msg" id="phraseFeedback"></div><div class="btn-group"><button class="btn" id="checkPhraseBtn">✅ Перевірити</button><button class="btn btn-primary" id="nextPhraseBtn">🎲 Наступна</button><button class="btn audio-btn" id="speakPhraseBtn">🔊 Озвучити фразу</button><button class="btn btn-mic" id="micPhraseBtn">🎤 Вимова фрази</button></div><div class="progress-text" id="phraseProgress" style="text-align:center"></div></div>`;
+    if (phrasesPanel) phrasesPanel.innerHTML = `
+        <div class="sentence-builder">
+            <div class="task-prompt">📘 Складіть речення словацькою</div>
+            <div class="sentence-target" id="targetSentenceUa"></div>
+            <div class="word-bank" id="wordBankContainer"></div>
+            <div class="sentence-construction" id="constructedArea"></div>
+            <div class="feedback-msg" id="phraseFeedback"></div>
+            <div class="btn-group">
+                <button class="btn" id="checkPhraseBtn">✅ Перевірити</button>
+                <button class="btn btn-primary" id="nextPhraseBtn">🎲 Наступна</button>
+                <button class="btn audio-btn" id="speakPhraseBtn">🔊 Озвучити фразу</button>
+                <button class="btn btn-mic" id="micPhraseBtn">🎤 Вимова фрази</button>
+            </div>
+            <div class="progress-text" id="phraseProgress" style="text-align:center"></div>
+        </div>
+    `;
     
     const listeningPanel = document.getElementById("listeningPanel");
-    if (listeningPanel) listeningPanel.innerHTML = `<div class="listening-card"><div class="listening-icon">🎧</div><button class="btn btn-primary" id="speakListeningBtn">🔊 Прослухати</button><input type="text" id="listeningAnswerInput" class="listening-input" placeholder="Введіть словацькою..."><div class="sk-keyboard" id="skKeyboard"></div><div class="btn-group"><button class="btn" id="checkListeningBtn">✅ Перевірити</button><button class="btn btn-mic" id="micListeningBtn">🎤 Сказати в мікрофон</button><button class="btn btn-primary" id="nextListeningBtn">🎲 Наступне</button></div><div id="listeningFeedback" class="feedback-msg"></div><div id="listeningProgress" style="text-align:center"></div></div>`;
+    if (listeningPanel) listeningPanel.innerHTML = `
+        <div class="listening-card">
+            <div class="listening-icon">🎧</div>
+            <button class="btn btn-primary" id="speakListeningBtn">🔊 Прослухати</button>
+            <input type="text" id="listeningAnswerInput" class="listening-input" placeholder="Введіть словацькою...">
+            <div class="sk-keyboard" id="skKeyboard"></div>
+            <div class="btn-group">
+                <button class="btn" id="checkListeningBtn">✅ Перевірити</button>
+                <button class="btn btn-mic" id="micListeningBtn">🎤 Сказати в мікрофон</button>
+                <button class="btn btn-primary" id="nextListeningBtn">🎲 Наступне</button>
+            </div>
+            <div id="listeningFeedback" class="feedback-msg"></div>
+            <div id="listeningProgress" style="text-align:center"></div>
+        </div>
+    `;
     
     const dialoguesPanel = document.getElementById("dialoguesPanel");
-    if (dialoguesPanel) dialoguesPanel.innerHTML = `<div class="dialog-card"><div class="task-prompt">💬 Виберіть тему діалогу</div><div class="btn-group" id="dialogThemeSelector"></div><div id="dialogContent" class="dialog-bubble"></div><div class="btn-group"><button class="btn btn-primary" id="speakDialogLineBtn">🔊 Озвучити репліку</button><button class="btn btn-mic" id="micDialogBtn">🎤 Відповісти голосом</button></div><div id="dialogFeedback" class="feedback-msg"></div></div>`;
+    if (dialoguesPanel) dialoguesPanel.innerHTML = `
+        <div class="dialog-card">
+            <div class="task-prompt">💬 Виберіть тему діалогу</div>
+            <div class="btn-group" id="dialogThemeSelector"></div>
+            <div id="dialogContent" class="dialog-bubble"></div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="speakDialogLineBtn">🔊 Озвучити репліку</button>
+                <button class="btn btn-mic" id="micDialogBtn">🎤 Відповісти голосом</button>
+            </div>
+            <div id="dialogFeedback" class="feedback-msg"></div>
+        </div>
+    `;
     
     const vocabPanel = document.getElementById("vocabPanel");
-    if (vocabPanel) vocabPanel.innerHTML = `<input type="text" id="searchVocab" class="search-box" placeholder="🔍 Пошук слів..."><div id="vocabListContainer" class="vocab-list"></div>`;
+    if (vocabPanel) vocabPanel.innerHTML = `
+        <input type="text" id="searchVocab" class="search-box" placeholder="🔍 Пошук слів...">
+        <div id="vocabListContainer" class="vocab-list"></div>
+    `;
 }
 
 function bindEvents() {
@@ -583,12 +1056,17 @@ function bindEvents() {
     const nextPhraseBtn = document.getElementById("nextPhraseBtn");
     if (nextPhraseBtn) nextPhraseBtn.onclick = nextPhrase;
     const speakPhraseBtn = document.getElementById("speakPhraseBtn");
-    if (speakPhraseBtn) speakPhraseBtn.onclick = () => { let p = currentPhrases[currentPhraseIndex % currentPhrases.length]; if(p) speakText(p.sk); };
+    if (speakPhraseBtn) speakPhraseBtn.onclick = () => { 
+        let p = currentPhrases[currentPhraseIndex % currentPhrases.length]; 
+        if(p) speakText(p.sk); 
+    };
     
     const speakListeningBtn = document.getElementById("speakListeningBtn");
     if (speakListeningBtn) speakListeningBtn.onclick = () => {
         const input = document.getElementById("listeningAnswerInput");
-        if (input) speakText(input.dataset.correctAnswer);
+        if (input && input.dataset.correctAnswer) {
+            speakText(input.dataset.correctAnswer);
+        }
     };
     const checkListeningBtn = document.getElementById("checkListeningBtn");
     if (checkListeningBtn) checkListeningBtn.onclick = checkListening;
@@ -601,7 +1079,9 @@ function bindEvents() {
             if (currentDialogueIndex < currentDialogueLines.length - 1) {
                 const nextLine = currentDialogueLines[currentDialogueIndex + 1];
                 if (nextLine.speaker === "user") {
-                    startListening("", (ok, spoken) => { advanceDialogue(spoken); }, micDialogBtn);
+                    startListening("", (ok, spoken) => { 
+                        advanceDialogue(spoken); 
+                    }, micDialogBtn);
                 } else {
                     advanceDialogue("");
                 }
@@ -620,26 +1100,111 @@ function bindEvents() {
     setupMicButton("micListeningBtn", () => document.getElementById("listeningAnswerInput")?.dataset.correctAnswer, "listeningFeedback", "Вимова збігається!");
 }
 
+// ======================== ДОДАТКОВІ СТИЛІ ДЛЯ IOS ========================
+function addIOSStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        
+        /* Покращення для сенсорних екранів */
+        @media (max-width: 768px) {
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                min-height: 44px;
+                min-width: 44px;
+            }
+            .theme-btn {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+            .key {
+                padding: 12px 16px;
+                font-size: 1.1rem;
+                min-width: 44px;
+                min-height: 44px;
+            }
+            .word-slovak {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Для iOS Safari - покращення прокрутки */
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .app-container {
+            -webkit-touch-callout: none;
+        }
+        
+        input, textarea, select {
+            font-size: 16px !important; /* Запобігає зуму на iOS */
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // ======================== ІНІЦІАЛІЗАЦІЯ ========================
 function initApp() {
     if (!currentThemeData) {
-        currentThemeId = Object.keys(ALL_THEMES)[0] || "A1_zaklad";
+        const themeKeys = Object.keys(ALL_THEMES);
+        currentThemeId = themeKeys[0] || "A1_zaklad";
         currentThemeData = ALL_THEMES[currentThemeId];
         currentWords = currentThemeData?.words || [];
         currentPhrases = currentThemeData?.phrases || [];
         currentListeningItems = currentThemeData?.listeningItems || [];
     }
+    
     loadThemeProgress();
     updateFlashcardDisplay();
     updateLearnedStats();
     generateQuizQuestion();
     if (currentPhrases.length) loadPhrase(0);
     if (currentListeningItems.length) loadListeningTask(0);
+    
+    // Додаємо стилі для iOS
+    addIOSStyles();
+    
+    // Показуємо інструкції для iOS
+    if (isIOS) {
+        showIOSInstructions();
+        // Завантажуємо голоси на iOS
+        setTimeout(() => {
+            loadVoices().then(voices => {
+                console.log('📱 iOS голоси готові:', voices.length);
+            });
+        }, 500);
+    }
+    
     initKeyboard();
     bindEvents();
     switchTab("flashcards");
     renderThemeHierarchy();
+    
+    console.log('✅ Додаток ініціалізовано');
+    console.log('📚 Поточна тема:', currentThemeId);
+    console.log('📝 Слів:', currentWords.length);
+    console.log('📖 Фраз:', currentPhrases.length);
+    console.log('🎧 Аудіо:', currentListeningItems.length);
 }
 
-// Запуск
-loadData();
+// ======================== ЗАПУСК ========================
+// Додаємо обробник для завантаження сторінки
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Запуск SlovakLearn Pro...');
+    loadData();
+});
+
+// Запасний варіант, якщо DOM вже завантажено
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    console.log('🚀 Запуск (готовий DOM)...');
+    // Перевіряємо, чи не запущено вже
+    if (!window._appStarted) {
+        window._appStarted = true;
+        // loadData() буде викликано через DOMContentLoaded
+    }
+}
