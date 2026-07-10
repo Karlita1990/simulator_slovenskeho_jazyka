@@ -1,0 +1,182 @@
+{
+    "A1_zaklad": ["áno","voda","dom","matka"],
+    "A1_zaklad_byť": ["som","je","sme"],
+    "A1_zaklad_mať": ["mám","má","majú"],
+    "A1_rodina": ["matka","otec","brat","sestra"],
+    "A1_rodina_prídavné": ["mladý","starý"],
+    "A1_jedlo": ["chlieb","jablko"],
+    "A2_zaklad": ["námestie","kino","obchod"],
+    "A2_zaklad_mesto": ["autobus","vlak","stanica"],
+    "A2_rodina": ["švagor","švagriná"],
+	"med2_A2_I_Anatomicke_termíny_Casti_tela": [
+	    "hlava","krk","trup","hrudník","brucho","chrbát","panva","horná končatina","dolná končatina","rameno","lakeť","zápästie","dlaň","prst (na ruke)",
+		"bedro","stehno","koleno","členok","chodidlo","prst (na nohe)","hlava (lebka)","tvár","čelo","spánok","oko","ucho",
+		"nos","ústa","pera","brada","čeľusť","jazyk","zub (množ. zuby)","hrdlo","krčné stavce","hrudné stavce","driekové stavce",
+        "krížová kosť","kostrč","kľúčna kosť","lopatka","hrudná kosť","rebro (množ. rebrá)","panvová kosť"
+	],
+	
+	"med2_A2_I_Anatomicke_termíny_Vnútorné_orgány": [
+      "mozog","miecha","srdce","pľúca (množ.)","pažerák","žalúdok","tenké črevo","hrubé črevo","slepé črevo","konečník","konečník (análny otvor)",
+      "pečeň","žlčník","pankreas","slezina","oblička (množ. obličky)","močovod","močový mechúr","močová rúra","prostata (predstojnica)",
+      "semenník (množ. semenníky)","vaječník (množ. vaječníky)","maternica","pošva","štítna žľaza","nadoblička","lymfatická uzlina","lymfatická cieva"
+	  
+	],
+
+    "med2_A2_I_Anatomicke_termíny_Cievy_a_nervy": [
+	  "tepna","žila","vlásočnica / kapilára","aorta","pľúcna tepna","krčná tepna","vencová / koronárna tepna","obličková tepna","stehenná tepna",
+      "horná / dolná dutá žila","portálna žila","nerv (množ. nervy)","miechový nerv","blúdivý nerv","sedací nerv","nervová dráha",
+      "nervové zakončenie"
+	],	
+	
+	"med2_A2_I_Anatomicke_termíny_Kosti_a_kĺby": [
+	  "kosť (množ. kosti)","kĺb (množ. kĺby)","chrupavka","šľacha","väz","sval (množ. svaly)","ramenný kĺb","lakťový kĺb","zápästný kĺb",
+      "bedrový kĺb","kolenný kĺb","členkový kĺb","medzistavcová platnička","kostná dreň","okostica","lebka","sánka","horná čeľusť",
+	  "nosová prepážka","nosová kosť","lícna kosť","čelová kosť","spánková kosť","záhlavná kosť","drieková chrbtica","krčná chrbtica",
+      "hrudná chrbtica"
+	],
+	
+	"med2_A2_I_Anatomicke_termíny_Dýchacie_cesty": [
+      "nosová dutina","prínosové dutiny","čelová dutina","čeľustná dutina","nosohltan","hrtan","priedušnica","prieduška (množ. priedušky)",
+      "priedušnička (bronchiol)","pľúcny mechúrik (alveola)","pohrudnica","hlasivky"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Tráviaca_sústava": [
+      "ústna dutina","podnebie","mandľa (množ. mandle)","slinná žľaza","hltan","pažerákový zvierač","žalúdočná sliznica","žalúdočná šťava",
+      "dvanástnik","lačník","bedrovník (ileum)","slepé črevo (cékum)","červovitý prívesok (apendix)","vzostupný tračník","priečny tračník",
+      "zostupný tračník","esovitá slučka","konečník (rektum)","análny zvierač","žlč","žlčovod","pankreatický vývod"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Močová_a_pohlavná_sústava": [
+      "obličková panvička","obličkový kalich","obličkový glomerulus","močovod","močový mechúr","zvierač močového mechúra",
+      "močová rúra","semenník","nadsemenník","semenovod","semenný mechúrik","predstojnica (prostata)","penis / pohlavný úd",
+      "miešok","vaječník","vajíčkovod","maternica","krčok maternice","pošva","prsná žľaza","bradavka"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Koža_a_jej_zložky": [
+      "koža","pokožka","zamša (dermis)","podkožné tkanivo","vlas (množ. vlasy)","necht (množ. nechty)","mazová žľaza","potná žľaza",
+      "vlasový folikul","pigment","melanín"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Oko": [
+      "očná guľa","rohovka","dúhovka","zrenička","šošovka","sietnica","očný nerv","očné viečko","mihalnica (množ. mihalnice)",
+      "slzná žľaza","sklovec","cievovka"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Ucho": [
+      "vonkajšie ucho","ušnica","vonkajší zvukovod","bubienok","stredné ucho","sluchové kostičky","kladivko","nákovка",
+      "strmienok","Eustachova trubica","vnútorné ucho","slimák","polkruhovité kanáliky","sluchový nerv"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Celkové_príznaky": [
+      "horúčka","zimnica","triaška","únava","slabosť","malátnosť","nevoľnosť","vracanie","závrat","mdloba / odpadnutie",
+      "potenie","nočné potenie","strata chuti do jedla","nechutenstvo","úbytok hmotnosti","prírastok hmotnosti","opuch",
+      "začervenanie","bledosť","cyanóza / modrasté sfarbenie","žltačka"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Bolesť": [
+      "bolesť","tupá bolesť","ostrá bolesť","bodavá bolesť","pálivá bolesť","pulzujúca bolesť","kŕčovitá bolesť","tlaková bolesť",
+      "vystreľujúca bolesť","vyžarovanie bolesti","kolikovitá bolesť","bolesť na hrudi","bolesť brucha","bolesť hlavy","bolesť chrbta",
+      "bolesť v krížoch","bolesť kĺbov","bolesť svalov","nočná bolesť","pokojová bolesť","bolesť pri pohybe","bolesť pri dýchaní","bolesť pri prehĺtaní",
+      "bolesť pri močení"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Dýchacie_príznaky": [
+      "kašeľ","suchý kašeľ","vlhký / produktívny kašeľ","dráždivý kašeľ","štekavý kašeľ","vykašliavanie / expektorácia","hlien / spútum","hnisavý hlien",
+      "vykašliavanie krvi / hemoptýza","dýchavičnosť","sťažené dýchanie / dyspnoe","sipot","piskot / stridor","vlhké chropy","suché chropy","krepitácia",
+      "nádcha","upchatý nos","výtok z nosa","kýchanie"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Srdcovo_cievne_príznaky": [
+      "búšenie srdca / palpitácie","nepravidelný pulz","zrýchlený pulz / tachykardia","spomalený pulz / bradykardia","šelest na srdci","systolický šelest",
+      "diastolický šelest","oslabené / ohlušené tóny","akcentované tóny","arytmia","extrasystola","anginózna bolesť / angína pektoris",
+      "bolesť za hrudnou kosťou","opuch dolných končatín","kŕčové žily / varixy"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Príznaky_tráviacej_sústavy": [
+      "hnačka","zápcha","vracanie","vracanie krvi / hemateméza","krv v stolici / meléna","čierna dechtovitá stolica","svetlá / ílovitá stolica",
+      "nafukovanie","plynatosť / flatulencia","pálenie záhy / pyróza","grganie","reflux","nevoľnosť / nauzea","nechutenstvo","škvŕkanie v bruchu",
+      "napätá brušná stena","mäkká brušná stena","bolestivé brucho pri palpácii","obranné napätie / defense musculaire","Blumbergov príznak","Murphyho príznak,"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Močové_príznaky": [
+      "časté močenie / polakizúria","bolestivé močenie / dyzúria","pálenie pri močení","krv v moči / hematúria","zakalený moč",
+      "tmavý moč","pena v moči","zadržiavanie moču / retencia","slabý prúd moču","prerušovaný prúd moču","noktúria","reziduálny moč"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Kožné_príznaky": [
+      "vyrážka","začervenanie / erytém","svrbenie / pruritus","pľuzgier","pľuzgierik / vezikula","mokvanie","šupina","chrasta","vred / ulkus",
+      "modrina / hematóm","petéchie","jazva","pigmentácia","depigmentácia","ekzém","urtikária / žihľavka"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Neurologické_príznaky": [
+      "závrat / vertigo","bolesť hlavy / cefalea","migréna","mravčenie / parestézia","tŕpnutie / necitlivosť","strata citlivosti / anestézia",
+      "znížená citlivosť / hypestézia","zvýšená citlivosť / hyperestézia","obrna / paralýza","čiastočná obrna / paréza","svalová slabosť","svalový kŕč",
+      "svalová stuhnutosť / rigidita","tras / tremor","kŕč (množ. kŕče)","bezvedomie","porucha vedomia","zmätenosť","porucha reči / afázia"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Psychické_príznaky": [
+      "úzkosť","strach","depresia","nespavosť / insomnia","ospalosť / somnolencia","podráždenosť","nepokoj",
+      "agresivita","halucinácia","blud"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Vyšetrovacie_metódy": [
+      "anamnéza","fyzikálne vyšetrenie","auskultácia","perkusia","palpácia","tapotement","meranie krvného tlaku","meranie pulzu",
+      "meranie telesnej teploty","pulzná oxymetria","odber krvi","krvný obraz","zápalové markery","C-reaktívny proteín (CRP)",
+      "sedimentácia erytrocytov (FW)","vyšetrenie moču","kultivácia moču","výter z hrdla","výter z nosa","výter z močovej rúry",
+      "ster z konečníka","biopsia","histologické vyšetrenie","cytologické vyšetrenie"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Zobrazovacie_metódy": [
+      "röntgen (RTG)","snímka","skiagrafia","skiaskopia","ultrasonografia / sonografia","duplexná sonografia","echokardiografia",
+      "počítačová tomografia (CT)","magnetická rezonancia (MRI)","angiografia","koronarografia","rádioizotopové vyšetrenie / scintigrafia","kontrastná látka"
+    ],
+	
+    "med2_A2_I_Anatomicke_termíny_Endoskopické_vyšetrenia": [
+      "endoskopia","gastroskopia","kolonoskopia","bronchoskopia","cystoskopia","rektoskopia","laryngoskopia","otoskopia","oftalmoskopia"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Funkčné_vyšetrenia": [
+      "elektrokardiografia (EKG)","elektroencefalografia (EEG)","elektromyografia (EMG)","spirometria","test funkcie pľúc",
+      "záťažový test / ergometria","Holterovo monitorovanie EKG","24-hodinové monitorovanie tlaku"
+    ],
+  
+    "med2_A2_I_Anatomicke_termíny_Spôsoby_podania_liekov": [
+      "perorálne (cez ústa)","sublinguálne (pod jazyk)","intravenózne (do žily)","intramuskulárne (do svalu)","subkutánne (pod kožu)","inhalačne",
+      "rektálne (do konečníka)","lokálne / miestne","transdermálne (cez kožu)"
+    ],
+    "med2_A2_I_Anatomicke_termíny_Liekové_formy": [
+      "tableta (množ. tablety)","kapsula","sirup","suspenzia","roztok","masť","krém","gél","čapík (množ. čapíky)","injekcia","infúzia",
+      "sprej","kvapky","očné kvapky","ušné kvapky","nosné kvapky","inhalátor"
+    ],
+	
+
+
+
+    "Typy_liečiv": [
+      "liek proti bolesti / analgetikum","liek proti horúčke / antipyretikum","liek proti zápalu / antiflogistikum","antibiotikum (množ. antibiotiká)",
+      "antivirotikum","antimykotikum","antihistaminikum","kortikoid / kortikosteroid","bronchodilatancium","spazmolytikum","diuretikum",
+      "antihypertenzívum","antiarytmikum","antikoagulancium","antiagregancium","sedatívum","hypnotikum","anxiolytikum",
+      "antidepresívum","cytostatikum","imunosupresívum","vakcína","probiotikum"
+    ],
+    "Chirurgické_výkony_a_ošetrenie": [
+      "operácia / chirurgický zákrok","lokálna anestézia","celková anestézia / narkóza","spinálna anestézia","dezinfekcia","dezinfekčný roztok",
+      "sterilný obväz","steh (množ. stehy)","šitie rany","vybratie stehov","drenáž","dlaha","sadrová dlaha","sadrový obväz","repozícia",
+      "amputácia","resekcia","transplantácia","laparotómia","torakotómia","kanylácia / zavedenie kanyly","katetrizácia","endoskopický výkon"
+    ],
+    "Iné_liečebné_postupy": [
+      "rehabilitácia","fyzioterapia","elektroliečba","fototerapia","inhalácia","nebulizácia","oxygenoterapia","transfúzia","dialýza",
+      "psychoterapia","diéta","pokojový režim","hlasový pokoj"
+    ],
+	
+	"V_Časté_diagnózy_a_ochorenia": [
+    "zápal","infekcia","nádor","nezhubný / benígny nádor","zhubný / malígny nádor","rakovina","metastáza","zlomenina / fraktúra","vyvrtnutie / distorzia",
+    "pomliaždenie / kontúzia","krvácanie","vnútorné krvácanie","vonkajšie krvácanie","šok","anafylaktický šok","sepsa","absces","ischémia","infarkt",
+    "infarkt myokardu","mozgová príhoda / cievna mozgová príhoda","ateroskleróza","hypertenzia / vysoký krvný tlak","hypotenzia / nízky krvný tlak",
+    "trombóza","embólia","pľúcna embólia","pneumónia / zápal pľúc","bronchitída","astma","pneumotorax","žalúdočný vred","dvanástnikový vred",
+	"zápal slepého čreva / apendicitída","zápal žlčníka / cholecystitída","zápal pankreasu / pankreatitída","hepatitída","cirhóza pečene",
+    "zápal obličiek / nefritída","zápal obličkovej panvičky / pyelonefritída","obličkové kamene / nefrolitiáza","žlčníkové kamene / cholelitiáza",
+    "cystitída","cukrovka / diabetes mellitus","dna / hyperurikémia","reumatizmus","osteoporóza","alergia","ekzém","psoriáza / lupienka",
+    "glaukóm / zelený zákal","katarakta / sivý zákal"
+  ],
+  "VI_Slovné_spojenia_a_frázy": [
+    "Kde Vás to bolí?","Ukážte mi, kde presne to bolí.","Na stupnici od 0 do 10, ako silná je bolesť?","Odkedy máte tieto ťažkosti?","Čo bolesť zhoršuje?",
+    "Čo Vám prináša úľavu?","Vyžaruje bolesť niekam?","Zhlboka sa nadýchnite.","Zadržte dych.","Vykašlite, prosím.","Otvorte ústa.","Povedzte \"ááá\".",
+    "Vystrite ruku.","Ohnite koleno.","Uvoľnite sa.","Ľahnite si na chrbát.","Ľahnite si na brucho.","Postavte sa.","Posaďte sa.","Otočte sa na bok.",
+    "Ste alergický na niečo?","Užívate pravidelne nejaké lieky?","Fajčíte?","Pijete alkohol?","Aké ochorenia ste prekonali?","Mali ste v minulosti nejaké operácie?",
+    "Vyskytujú sa vo Vašej rodine nejaké vážne ochorenia?","Predpíšem Vám lieky.","Užívajte jednu tabletu trikrát denne.","Pred jedlom / po jedle.",
+    "Zapite dostatočným množstvom vody.","Nalačno.","Príďte na kontrolu o týždeň.","Ak sa to zhorší, príďte ihneď.","Skoré uzdravenie!"
+  ],
+  "med_A2_zaklad": [
+    "cítiť sa","Necítim sa dobre","Som chorý (чол.) / chorá (жін.)","Mám nádchu","Mám kašeľ","Bolí ma...","...hrdlo","...hlava","...brucho",
+    "Mám teplotu / horúčku","lekár / lekárka","doktor / doktorka","Idem k lekárovi / k doktorke.","lekáreň","lieky","choroba","zdravý / zdravá",
+    "alergia","krvný tlak","Začiatok rozhovoru / Pozdrav","Nádcha / Prechladnutie","Štruktúrovaná anamnéza","Hlavná ťažkosť a jej charakteristika","Mozgová príhoda"
+  ]
+	
+	
+	
+	
+	
+}
