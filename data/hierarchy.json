@@ -1,0 +1,247 @@
+{
+    "A1": {
+        "name": "🇸🇰 Рівень A1",
+        "categories": {
+            "zaklad": {
+                "name": "Основи",
+                "themes": {
+                    "A1_zaklad": { "name": "Базові слова A1" },
+                    "A1_zaklad_byť": { "name": "Дієслово 'byť' (бути)" },
+                    "A1_zaklad_mať": { "name": "Дієслово 'mať' (мати)" },
+                    "A1_zaklad_sloveso_1": { "name": "Sloveso_1" },
+					"Pozdrav a zoznámenie / Привітання та знайомство": {"name": "Pozdrav a zoznámenie / Привітання та знайомство"},
+					"Rodina a vek / Сім'я та вік": {"name": "Rodina a vek / Сім'я та вік"},
+					"Povolanie a práca / Професія та робота": {"name": "Povolanie a práca / Професія та робота"},
+					"Víkend a voľný čas / Вихідні та вільний час": {"name": "Víkend a voľný čas / Вихідні та вільний час"},
+					"Bývanie a domácnosť / Житло та домашнє господарство": {"name": "Bývanie a domácnosť / Житло та домашнє господарство"},
+					"Stravovanie a jedlo / Харчування та їжа": {"name": "Stravovanie a jedlo / Харчування та їжа"},
+					"Nakupovanie / Покупки": {"name": "Nakupovanie / Покупки"},
+					"Cestovanie a doprava / Подорожі та транспорт": {"name": "Cestovanie a doprava / Подорожі та транспорт"},
+					"Reštaurácia / Ресторан": {"name": "Reštaurácia / Ресторан"}
+                }
+            },
+            "rodina": {
+                "name": "Родина",
+                "themes": {
+                    "A1_rodina": { "name": "Члени родини" },
+                    "A1_rodina_prídavné": { "name": "Описи родини" },
+					"Rodinná anamnéza, lekársky rozhovor / Сімейний анамнез, медична розмова": {"name": "Rodinná anamnéza (lekársky rozhovor) / Сімейний анамнез (медична розмова" },
+					"Bývanie a sociálne pomery,lekársky rozhovor / Житлові та соціальні умови, медична розмова": {"name": "Bývanie a sociálne pomery (lekársky rozhovor) / Житлові та соціальні умови (медична розмова)"}
+				}
+            },
+            "jedlo": {
+                "name": "Їжа",
+                "themes": {
+                    "A1_jedlo": { "name": "Продукти та напої" },
+					"Zdravie a návšteva lekára / Здоров'я та візит до лікаря": {"name": "Zdravie a návšteva lekára / Здоров'я та візит до лікаря"},
+					"Čas a denný režim / Час та режим дня": {"name": "Čas a denný režim / Час та режим дня"},
+					"Počasie a ročné obdobia / Погода та пори року": {"name": "Počasie a ročné obdobia / Погода та пори року"},
+					"Koníčky a záľuby / Хобі та захоплення": {"name": "Koníčky a záľuby / Хобі та захоплення"}
+					
+                }
+            }
+        }
+    },
+    "A2": {
+        "name": "🇸🇰 Рівень A2",
+        "categories": {
+            "zaklad": {
+                "name": "Поглиблені теми",
+                "themes": {
+                    "A2_zaklad": { "name": "Розширений словник A2" },
+                    "A2_zaklad_mesto": { "name": "Місто та транспорт" }
+                }
+            },
+            "rodina": {
+                "name": "Сімейні стосунки",
+                "themes": {
+                    "A2_rodina": { "name": "Родинні зв'язки A2" }
+                }
+            }
+        }
+    },
+    "Med": {
+        "name": "🇸🇰 Med Рівень A1-A2",
+        "categories": {
+            "terminu": {
+                "name": "Поглиблені теми медицина",
+                "themes": {
+                    "med_A2_zaklad_1": { "name": "med Розширений словник A2-1" },
+					"med_A2_zaklad_2": { "name": "med Розширений словник A2-2" },
+					"med_A2_zaklad_3": { "name": "med Розширений словник A2-3" },
+                    "med2_A2_I_Anatomicke_termíny_Casti_tela": { "name": "Anatomicke termíny-1. Casti_tela." },
+					"med2_A2_I_Anatomicke_termíny_Vnútorné_orgány": { "name": "Anatomicke termíny-2. Vnútorné_orgány." },
+					"med2_A2_I_Anatomicke_termíny_Cievy_a_nervy": { "name": "Anatomicke termíny-3. Cievy_a_nervy." },
+					"med2_A2_I_Anatomicke_termíny_Kosti_a_kĺby": { "name": "Anatomicke termíny-4. Kosti_a_kĺby." },
+					"med2_A2_I_Anatomicke_termíny_Dýchacie_cesty": { "name": "Anatomicke termíny-5. Dýchacie_cesty." },
+					
+					"med2_A2_I_Anatomicke_termíny_Tráviaca_sústava": { "name": "Anatomicke termíny-6. Tráviaca_sústava." },
+					"med2_A2_I_Anatomicke_termíny_Močová_a_pohlavná_sústava": { "name": "Anatomicke termíny-7. Močová_a_pohlavná_sústava." },
+					"med2_A2_I_Anatomicke_termíny_Koža_a_jej_zložky": { "name": "Anatomicke termíny-8. Koža_a_jej_zložky." },
+					"med2_A2_I_Anatomicke_termíny_Oko": { "name": "Anatomicke termíny-9. Oko." },
+					"med2_A2_I_Anatomicke_termíny_Ucho": { "name": "Anatomicke termíny-10. Ucho." },
+					"med2_A2_I_Anatomicke_termíny_Celkové_príznaky": { "name": "Anatomicke termíny-11. Celkové_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Bolesť": { "name": "Anatomicke termíny-12. Bolesť." },
+					"med2_A2_I_Anatomicke_termíny_Dýchacie_príznaky": { "name": "Anatomicke termíny-13. Dýchacie_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Srdcovo_cievne_príznaky": { "name": "Anatomicke termíny-14. Srdcovo_cievne_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Príznaky_tráviacej_sústavy": { "name": "Anatomicke termíny-15. Príznaky_tráviacej_sústavy" },
+					"med2_A2_I_Anatomicke_termíny_Močové_príznaky": { "name": "Anatomicke termíny-16. Močové_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Kožné_príznaky": { "name": "Anatomicke termíny-17. Kožné_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Neurologické_príznaky": { "name": "Anatomicke termíny-18. Neurologické_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Psychické_príznaky": { "name": "Anatomicke termíny-19. Psychické_príznaky." },
+					"med2_A2_I_Anatomicke_termíny_Vyšetrovacie_metódy": { "name": "Anatomicke termíny-20. Vyšetrovacie_metódy." },
+					"med2_A2_I_Anatomicke_termíny_Zobrazovacie_metódy": { "name": "Anatomicke termíny-21. Zobrazovacie_metódy." },
+					"med2_A2_I_Anatomicke_termíny_Endoskopické_vyšetrenia": { "name": "Anatomicke termíny-22. Endoskopické_vyšetrenia." },
+					"med2_A2_I_Anatomicke_termíny_Funkčné_vyšetrenia": { "name": "Anatomicke termíny-23. Funkčné_vyšetrenia." },
+					"med2_A2_I_Anatomicke_termíny_Spôsoby_podania_liekov": { "name": "Anatomicke termíny-24. Spôsoby_podania_liekov." },
+					"med2_A2_I_Anatomicke_termíny_Liekové_formy": { "name": "Anatomicke termíny-25. Liekové_formy." },
+					
+					"Typy_liečiv": { "name": "Anatomicke termíny-26. Typy_liečiv." },
+					"Chirurgické_výkony_a_ošetrenie": { "name": "Anatomicke termíny-27. Chirurgické výkony a ošetrenie." },
+					"Iné_liečebné_postupy": { "name": "Anatomicke termíny-28. Iné_liečebné_postupy." },
+					"V_Časté_diagnózy_a_ochorenia": { "name": "Anatomicke termíny-29. Časté diagnózy a ochorenia." },
+					"VI_Slovné_spojenia_a_frázy": { "name": "Anatomicke termíny-30. Slovné_spojenia_a_frázy." },
+					"med_A2_zaklad": { "name": "Anatomicke termíny-31. Prechladnutie." }
+					
+					
+					
+					
+                }
+            },
+            "terminu_2": {
+                "name": "med_стосунки, vyšetrenie - обстеження",
+                "themes": {
+                    "med_A2_zaklad_ekg": { "name": "EKG / Elektrokardiografia (ЕКГ / Електрокардіографія)" },
+					"med_A2_zaklad_rontgen": { "name": "Röntgenologické vyšetrenie (Рентгенологічне дослідження)" },
+					"med_A2_zaklad_odber_krvi": { "name": "Odber krvi (Забір крові)" },
+					"med_A2_zaklad_ultrazvuk": { "name": "Ultrazvukové vyšetrenie / Sonografia (Ультразвукове дослідження / Сонографія)" },
+					"med_A2_zaklad_endoskopia": { "name": "Endoskopické vyšetrenie — Gastroskopia a kolonoskopia (Ендоскопічне дослідження — Гастроскопія та колоноскопія)" },
+					"med_A2_zaklad_mri": { "name": "Magnetická rezonancia / MRI (Магнітно-резонансна томографія / МРТ)" },
+					"med_A2_zaklad_ct": { "name": "Počítačová tomografia / CT (Комп'ютерна томографія / КТ)" },
+					"med_A2_zaklad_angiografia": { "name": "Angiografia (Ангіографія)" },
+					"med_A2_zaklad_koronarografia": { "name": "Koronarografia (Коронарографія)" },
+					"med_A2_zaklad_bronchoskopia": { "name": "Bronchoskopia (Бронхоскопія)" }
+                }
+            },
+			
+			"terminu_3": {
+                "name": "med_стосунки, ПХО рани. гіпсування, Загальне обстеження",
+                "themes": {
+                    "med_A5_zaklad_primarne_osetrenie_rany": { "name": "Primárne ošetrenie rany (Первинна обробка рани)" },
+					"med_A6_zaklad_sadrovanie": { "name": "Sádrovanie / Založenie sadrovej dlahy (Гіпсування / Накладання гіпсової шини)" },
+					"med_A7_zaklad_auskultacia_plic_bronchitida_pneumonia": { "name": "Výsledky auskultácie pľúc — Bronchitída / Pneumónia (Результати аускультації легень — Бронхіт / Пневмонія)" },
+					"med_A8_zaklad_auskultacia_srdca_sumy_tony": { "name": "Výsledky auskultácie srdca — Šumy, tóny (Результати аускультації серця — Шуми, тони)" },
+					"med_A9_zaklad_vysetrenie_brucha_palpacia_peristaltika_bolest": { "name": "Vyšetrenie brucha — Palpácia, peristaltika, bolesť (Обстеження живота — Пальпація, перистальтика, біль)" },
+					"med_A10_zaklad_vysetrenie_oblicek_tapotement": { "name": "Vyšetrenie obličiek — Tapotement (Обстеження нирок — Постукування)" },
+					"med_A11_zaklad_pohyblivost_klbov": { "name": "Pohyblivosť kĺbov (Рухливість суглобів)" },
+					"med_A12_zaklad_svalovy_tonus_koncatin": { "name": "Svalový tonus končatín (М'язовий тонус кінцівок)" },
+					"med_A13_zaklad_citlivost_koze_koncatin": { "name": "Citlivosť kože končatín (Чутливість шкіри кінцівок)" },
+					"": { "name": "" }
+                }
+            },
+			
+			
+			"terminu_4": {
+                "name": "med_стосунки, алергологія, пульмонологія, дерматологія та урологія",
+                "themes": {
+                    "med_A14_zaklad_alergicka_dermatitida": { "name": "Alergická dermatitída / Kontaktný ekzém (Алергічний дерматит / Контактний екзема)" },
+					"med_A15_zaklad_astmaticky_zachvat": { "name": "Astmatický záchvat / Bronchiálna astma (Приступ бронхіальної астми)" },
+					"med_A16_zaklad_psoriaza": { "name": "Psoriáza / Lupienka (Псоріаз)" },
+					"med_A17_zaklad_gonorea": { "name": "Gonorea / Kvapavka (Гонорея)" },
+					"med_A18_zaklad_cystitida": { "name": "Cystitída / Zápal močového mechúra (Цистит / Запалення сечового міхура)" },
+					"med_A19_zaklad_adenoma_prostaty": { "name": "Adenóma prostaty / Benígna hyperplázia prostaty (Аденома простати / Доброякісна гіперплазія простати)" }
+                }
+            }
+			
+			
+        }
+    },
+	
+	
+	"Med_2": {
+        "name": "🇸🇰 Med Dialoges A2",
+        "categories": {
+            "dialoges_1": {
+                "name": "Dialoges Поглиблені теми медицини",
+                "themes": {	
+					"med_A2_2001": { "name": "Mozgová príhoda (Інсульт)" },					
+                    "med_A2_2002": { "name": "Hypertenzná choroba (Гіпертонічна хвороба)" },
+					"med_A2_2003": { "name": "Infarkt myokardu (Інфаркт міокарда)" },
+					"med_A2_2004": { "name": "Pneumónia (Пневмонія)" },
+					"med_A2_2005": { "name": "Gastritída (Гастрит)" },
+					"med_A2_2006": { "name": "Refluxná choroba pažeráka (ГЕРХ)" },
+					"med_A2_2007": { "name": "Črevná infekcia (Кишкова інфекція)" },
+					"med_A2_2008": { "name": "Migréna (Мігрень)" }				
+                }
+            },
+            "dialoges_2": {
+                "name": "med Dialoges Otolaringologia",
+                "themes": {					
+                    "med_A2_zaklad_otitis_acuta_nonperforativa": { "name": "Akútny neperforatívny zápal stredného ucha (Гострий неперфоративний середній отит)" },
+					"med_A2_zaklad_otitis_acuta_perforativa": { "name": "Akútny perforatívny zápal stredného ucha (Гострий перфоративний середній отит)" },
+					"med_A2_zaklad_frontitis_acuta": { "name": " Akútna čelová sinusitída (Akútna frontitída) (Гострий фронтит)" },
+					"med_A2_zaklad_sinusitis_maxillaris_acuta": { "name": "Akútna maxilárna sinusitída (Гострий верхньощелепний синусит)" },
+					"med_A2_zaklad_tonzilitis_acuta": { "name": "Akútna tonzilitída (Гострий тонзиліт / ангіна)" },
+					"med_A2_zaklad_laryngitis_acuta": { "name": "Akútna laryngitída (Гострий ларингіт)" },
+					"med_A2_zaklad_faryngitis_acuta": { "name": "Akútna faryngitída (Гострий фарингіт)" },
+					"med_A2_zaklad_rinitis_acuta": { "name": "Akútna rinitída (Гострий риніт)" },
+					"med_A2_zaklad_rinitis_allergica": { "name": "Alergická rinitída (Алергічний риніт)" }
+                }
+            },
+			"dialoges_3": {
+                "name": "med Dialoges Nephrologia - Gastroenterologia",
+                "themes": {
+                    "med_A2_zaklad_renaina_kolika": { "name": "Renálna kolika (Ниркова коліка)" },
+					"med_A2_zaklad_pyelonefritis_acuta": { "name": "Akútna pyelonefritída (Гострий пієлонефрит)" },
+					"med_A2_zaklad_glomerulonefritis_acuta": { "name": "Akútna glomerulonefritída (Гострий гломерулонефрит)" },
+					"med_A2_zaklad_cholecystitis_acuta": { "name": "Akútna cholecystitída (Гострий холецистит)" },
+					"med_A2_zaklad_pankreatitis_acuta": { "name": "Akútna pankreatitída (Гострий панкреатит)" },
+					"med_A2_zaklad_crevna_kolika": { "name": "Črevná kolika (Кишкова коліка)" },
+					"med_A2_zaklad_appendicitis_acuta": { "name": "Akútna apendicitída (Гострий апендицит)" },
+					"med_A2_zaklad_perforovany_vred": { "name": "Perforovaný žalúdočný vred (Перфоративна виразка шлунку)" },
+					
+					"med_A2_zaklad_krvacanie_horny_git": { "name": "Krvácanie z horného GIT (Шлунково-кишкова кровотеча — верхня)" },
+					"med_A2_zaklad_krvacanie_dolny_git": { "": "Krvácanie z dolného GIT (Шлунково-кишкова кровотеча — нижня)" }
+					
+                }
+            },
+			"dialoges_4": {
+                "name": "med Dialoges Traumatologia - Orthopedia",
+                "themes": {
+                    "med_A2_zaklad_lumbalgia": { "name": "Lumbalgia / Bolesť v krížoch" },
+					"med_A2_zaklad_distorzia_clenok": { "name": "Distorzia / Subluxácia členkového kĺbu (Вивих / Підвивих гомілково-ступневого суглоба)" },
+					"med_A2_zaklad_fraktur_vretenna": { "name": "Zlomenina vretennej kosti v typickom mieste (Перелом променевої кістки в типовому місці)" },
+					
+					"med_A2_zaklad_fraktur_klucna": { "name": "Zlomenina kľúčnej kosti (Перелом ключиці)" },
+					"med_A2_zaklad_pneumotorax": { "name": "Zatvorený pneumotorax (Закритий пневмоторакс)" },
+					"med_A2_zaklad_kompresivna_fraktur_stavec": { "name": "Kompresívna zlomenina hrudného stavca (Компресійний перелом грудного хребця)" },
+					
+					"med_A2_zaklad_meniskus": { "name": "Poškodenie kolenného kĺbu / Menisku (Пошкодження колінного суглоба / Меніска)" },
+					"med_A2_zaklad_fraktur_nos": { "name": "Zlomenina nosových kostí (Перелом кісток носа)" }					
+                }
+            },
+			
+			"dialoges_5": {
+                "name": "med Dialoges Ophtalmologia, Rheumathologia, Angiologia",
+                "themes": {
+                    "med_A2_zaklad_konjunktivitida": { "name": "Akútna konjunktivitída (Гострий кон'юнктивіт)" },
+					"med_A2_zaklad_glaukom": { "name": "Glaukóm (Глаукома)" },
+					"med_A2_zaklad_katarakta": { "name": "Katarakta (Катаракта)" },
+					
+					"med_A2_zaklad_reaktivna_artritida": { "name": "Reaktívna artritída kolenných kĺbov (Реактивний артрит колінних суглобів)" },
+					"med_A2_zaklad_dna": { "name": "Dna / Akútny dnavý záchvat (Подагра / Гострий подагричний напад)" },
+					"med_A2_zaklad_tromboza": { "name": "Trombóza hlbokých žíl dolných končatín (Тромбоз глибоких вен нижніх кінцівок)" },
+					
+					"med_A2_zaklad_ateroskleroza": { "name": "Obliterujúca ateroskleróza dolných končatín (Облітеруючий атеросклероз нижніх кінцівок)" },
+					"med_A2_zaklad_reumaticka_horucka": { "name": "Reumatizmus / Reumatická horúčka (Ревматизм / Гостра ревматична лихоманка)" }					
+                }
+            }
+			
+			
+			
+			
+        }
+    }
+	
+}
+
