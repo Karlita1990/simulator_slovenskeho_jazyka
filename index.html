@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>SlovakLearn Pro | Вкладені теми | Мікрофон + Діалоги</title>
+	
+	<link rel="stylesheet" href="my_vocabulary_slovak_index.css">
+
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1>🇸🇰 SlovakLearn Pro • Вкладені теми</h1>
+    </div>
+
+    <!-- Нова ієрархічна панель тем -->
+    <div id="themeHierarchy"></div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="flashcards">📇 Картки</button>
+        <button class="tab-btn" data-tab="quiz">📝 Тест</button>
+        <button class="tab-btn" data-tab="phrases">✍️ Фрази</button>
+        <button class="tab-btn" data-tab="listening">🎧 Аудіювання</button>
+        <button class="tab-btn" data-tab="dialogues">💬 Діалоги</button>
+        <button class="tab-btn" data-tab="vocab">📖 Словник</button>
+    </div>
+
+    <!-- Всі панелі -->
+    <div id="flashcardsPanel" class="panel active-panel"></div>
+    <div id="quizPanel" class="panel"></div>
+    <div id="phrasesPanel" class="panel"></div>
+    <div id="listeningPanel" class="panel"></div>
+    <div id="dialoguesPanel" class="panel"></div>
+    <div id="vocabPanel" class="panel"></div>
+    <footer>⚡ Вкладені теми (рівні → категорії) • Мікрофон • Діалоги</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
