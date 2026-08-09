@@ -1781,7 +1781,7 @@
         { "ua": "Минулого місяця це трапилося двічі.", "sk": "Minulý mesiac sa mi to stalo dvakrát.", "tokens": ["Minulý","mesiac","sa","mi","to","stalo","dvakrát","."], "distractors": ["raz","trikrát","štyrikrát","nikdy"] },
         { "ua": "Вимірюєте тиск вдома?", "sk": "Meriate si tlak doma?", "tokens": ["Meriate","si","tlak","doma","?"], "distractors": ["kde","ako","kedy"] },
         { "ua": "Інколи так, але значення не пам'ятаю.", "sk": "Občas áno, ale hodnoty si nepamätám.", "tokens": ["Občas","áno",",","ale","hodnoty","si","nepamätám","."], "distractors": ["vždy","nikdy"] },
-        { "ua": "Давайте зараз виміряємо. Тиск 165/100.", "sk": "Tak si ho teraz odmeriame. ... L: Tlak máte 165/100.", "tokens": ["Tak","si","ho","teraz","odmeriame",".","Tlak","máte","165/100","."], "distractors": ["120/80","130/85","140/90","150/95"] },
+        { "ua": "Давайте зараз виміряємо. Тиск 165/100.", "sk": "Tak si ho teraz odmeriame. ... Tlak máte 165/100.", "tokens": ["Tak","si","ho","teraz","odmeriame",".","Tlak","máte","165/100","."], "distractors": ["120/80","130/85","140/90","150/95"] },
         { "ua": "Скільки солите їжу?", "sk": "Koľko solíte jedlo?", "tokens": ["Koľko","solite","jedlo","?"], "distractors": ["čím","kedy","prečo"] },
         { "ua": "Досить багато, люблю солоні страви.", "sk": "Dosť, mám rád slané jedlá.", "tokens": ["Dosť",",","mám","rád","slané","jedlá","."], "distractors": ["málo","vôbec","normálne"] },
         { "ua": "Яке ваше споживання алкоголю?", "sk": "Aký je Váš príjem alkoholu?", "tokens": ["Aký","je","Váš","príjem","alkoholu","?"], "distractors": ["koľko","kedy","často"] },
